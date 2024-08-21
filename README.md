@@ -88,8 +88,8 @@ print(response.choices[0].message.content)
 
 
 # Q & A
-## Gemini API 无法使用
-经常有小伙伴反馈 Groq 和 OpenAI 没有问题，但是 Gemini API 无法使用，一个可能的原因是：cloudflare 中转请求时会根据请求者 IP 按就近原则转发请求，而有的地区不被 Google AI 支持，比如香港，这样就会导致请求返回`User location is not supported for the API use` 的结果。解决方法是直接使用国内 IP 或者使用其他地区代理，比如美区。
+## 1. Gemini API 无法使用
+经常有小伙伴反馈 Groq 和 OpenAI 没有问题，但是 Gemini API 无法使用，一个可能的原因是：cloudflare 中转请求时会根据请求者 IP 按就近原则转发请求，而有的地区不被 Google AI 支持，比如香港，这样就会导致请求返回 `User location is not supported for the API use` 的结果。解决方法是直接使用国内 IP 或者使用其他地区代理，比如美区。
 
 参考 issues：
 - https://github.com/ultrasev/llmproxy/issues/11
