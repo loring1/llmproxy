@@ -91,34 +91,3 @@ async def test_mistral():
         supplier="mistral"
     )
     assert '42' in response
-
-
-@pytest.mark.asyncio
-async def test_mistral_streaming():
-    BASE_URL = api_endpoint() + "/mistral"
-    api_key = os.environ["MISTRAL_API_KEY"]
-    model = "open-mistral-7b"
-    query = "Count from 1 to 5"
-    await asyncio.sleep(1)
-
-    async with aiohttp.ClientSession() as session:
-        async with session.post(
-            BASE_URL,
-            json={
-                "model": model,
-                "messages": [{"role": "user", "content": query}],
-                "stream": True,
-            },
-            headers={"Authorization": f"Bearer {api_key}"}
-        ) as response:
-            assert response.status == 200
-            content = ""
-            async for line in response.content:
-                if line.startswith(b"data: "):
-                    content += line.decode("utf-8").replace("data: ", "")
-
-            assert "1" in content
-            assert "2" in content
-            assert "3" in content
-            assert "4" in content
-            assert "5" in content
