@@ -5,10 +5,23 @@ from openai import AsyncOpenAI
 load_dotenv()
 
 
+def api_endpoint():
+    env = os.environ.get('ENV', 'development')
+    if env == 'production':
+        return "https://llmapi.ultrasev.com"
+    elif env == 'development':
+        return "http://192.168.31.46:3000"
+    else:
+        raise ValueError(f"Invalid environment: {env}")
+
+
+API_ENDPOINT = api_endpoint()
+
+
 async def make_request(api_key: str,
                        model: str,
                        supplier: str):
-    BASE_URL = "https://llmapi.ultrasev.com"
+    BASE_URL = API_ENDPOINT
     client = AsyncOpenAI(base_url=BASE_URL, api_key=api_key)
     response = await client.chat.completions.create(
         model=model,
@@ -42,7 +55,7 @@ async def test_gemini():
 
 
 @pytest.mark.asyncio
-async def test_gpt():
+async def test_openai():
     response = await make_request(
         api_key=os.environ["OPENAI_API_KEY"],
         model="gpt-3.5-turbo-1106",
