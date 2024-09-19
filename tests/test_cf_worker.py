@@ -9,7 +9,10 @@ def api_endpoint():
     env = os.environ.get('ENV', 'development')
     if env == 'production':
         return "https://llmapi.ultrasev.com"
-    return "http://192.168.31.46:3000"
+    elif env == 'development':
+        return "http://192.168.31.46:3000"
+    else:
+        raise ValueError(f"Invalid environment: {env}")
 
 
 API_ENDPOINT = api_endpoint()
