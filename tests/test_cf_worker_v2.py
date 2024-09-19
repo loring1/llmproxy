@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 import aiohttp
+import random
 load_dotenv()
 
 
@@ -20,6 +21,7 @@ async def make_request(api_key: str,
                        query: str = "what is the result of 2*21"):
     BASE_URL = api_endpoint() + "/" + supplier
     client = AsyncOpenAI(base_url=BASE_URL, api_key=api_key)
+    query += random.randint(1, 1000) * ' '  # avoid cached result
     response = await client.chat.completions.create(
         model=model,
         messages=[
