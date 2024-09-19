@@ -55,7 +55,7 @@ async def test_gemini():
 
 
 @pytest.mark.asyncio
-async def test_gpt():
+async def test_openai():
     response = await make_request(
         api_key=os.environ["OPENAI_API_KEY"],
         model="gpt-3.5-turbo-1106",
