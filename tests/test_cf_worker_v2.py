@@ -6,11 +6,18 @@ from openai import AsyncOpenAI
 load_dotenv()
 
 
+def api_endpoint():
+    env = os.environ.get('ENV', 'development')
+    if env == 'production':
+        return "https://llmapi.ultrasev.com/v2"
+    return "http://192.168.31.46:3000/v2"
+
+
 async def make_request(api_key: str,
                        model: str,
                        supplier: str,
                        query: str = "what is the result of 2*21"):
-    BASE_URL = "https://llmapi.ultrasev.com/v2/{}".format(supplier)
+    BASE_URL = api_endpoint() + "/" + supplier
     client = AsyncOpenAI(base_url=BASE_URL, api_key=api_key)
     response = await client.chat.completions.create(
         model=model,
@@ -68,3 +75,13 @@ async def test_gpt():
 #         )
 #         results.append(response)
 #     assert len(set(results)) < len(results)
+
+
+@pytest.mark.asyncio
+async def test_mistral():
+    response = await make_request(
+        api_key=os.environ["MISTRAL_API_KEY"],
+        model="open-mistral-7b",
+        supplier="mistral"
+    )
+    assert '42' in response
